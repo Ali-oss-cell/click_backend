@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -197,11 +198,26 @@ SIMPLE_JWT = {
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "https://www.clickexpress.ae",
+    "https://clickexpress.ae",
+    "http://localhost:3000",  # For development
+    "http://127.0.0.1:3000",  # For development
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Security Settings for Production
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Session Security
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
 
 # Email Configuration
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@clickexpress.com')
@@ -212,6 +228,6 @@ MAILGUN_API_KEY = config('MAILGUN_API_KEY', default='')
 MAILGUN_DOMAIN = config('MAILGUN_DOMAIN', default='')
 MAILGUN_FROM_EMAIL = config('MAILGUN_FROM_EMAIL', default='noreply@clickexpress.com')
 
-# Email Backend (for development)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For production
+# Email Backend (for production)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For production
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
