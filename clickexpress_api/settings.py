@@ -89,24 +89,25 @@ WSGI_APPLICATION = 'clickexpress_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# PostgreSQL configuration (uncomment when ready to use)
+# SQLite configuration (commented out for production)
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME', default='clickexpress'),
-#         'USER': config('DB_USER', default='clickexpress_user'),
-#         'PASSWORD': config('DB_PASSWORD', default='securepassword'),
-#         'HOST': config('DB_HOST', default='localhost'),
-#         'PORT': config('DB_PORT', default='5432'),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# PostgreSQL configuration (enabled for production)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='clickexpress'),
+        'USER': config('DB_USER', default='clickexpress_user'),
+        'PASSWORD': config('DB_PASSWORD', default='securepassword'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
+    }
+}
 
 
 # Password validation
@@ -200,9 +201,13 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "https://www.clickexpress.ae",
     "https://clickexpress.ae",
+    "http://164.92.161.93",  # Your server IP
     "http://localhost:3000",  # For development
     "http://127.0.0.1:3000",  # For development
 ]
+
+# Allow all origins for testing (remove in production)
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -214,10 +219,10 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-# Session Security
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# Session Security (disabled for HTTP testing)
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 
 # Email Configuration
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@clickexpress.com')

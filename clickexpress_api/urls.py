@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +27,8 @@ urlpatterns = [
     path('api/v1/gallery-images/', include('gallery.urls')),
     path('api/v1/upload/', include('upload.urls')),
     path('api/v1/contact/', include('contact.urls')),
+    # Add a simple root view
+    path('', lambda request: HttpResponse('ClickExpress API is running!', content_type='text/plain')),
 ]
 
 # Serve media files during development
